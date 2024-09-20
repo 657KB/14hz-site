@@ -55,7 +55,7 @@ main {
   }
   .nav-list > li {
     flex: 1;
-    padding: 1em 0  ;
+    padding: 1em 0;
     text-align: center;
   }
 }
