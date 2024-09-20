@@ -1,5 +1,6 @@
 * {
   margin: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -48,6 +49,17 @@ main {
   background-color: white;
 }
 
+@media screen and (max-width: 600px) {
+  .nav-list {
+    justify-content: center;
+  }
+  .nav-list > li {
+    flex: 1;
+    padding: 1em 0  ;
+    text-align: center;
+  }
+}
+
 /* name & slogan */
 .name-and-slogan {
   position: absolute;
@@ -65,7 +77,24 @@ main {
 
 .slogan {
   font-size: 28px;
+  line-height: 150%;
   transform: translateX(10px);
+}
+
+@media screen and (max-width: 600px) {
+  .name-and-slogan {
+    bottom: 40%;
+  }
+
+  .name {
+    font-size: 48px;
+  }
+  
+  .slogan {
+    font-size: 18px;
+    margin-right: 20%;
+    transform: translateX(6px);
+  }
 }
 
 /* others */

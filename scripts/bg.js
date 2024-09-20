@@ -47,6 +47,8 @@ function drawBackground() {
     resolution: { value: new THREE.Vector2(width, height) }
   }
 
+  const timeDelta = width > 600 ? 0.016 : 0.01
+
   const renderer = new THREE.WebGLRenderer({ antialias: true })
   renderer.setSize(width, height)
   renderer.setClearColor(0xffffff, 1)
@@ -66,7 +68,7 @@ function drawBackground() {
 
   function render() {
     requestAnimationFrame(render)
-    uniforms.time.value += 0.016
+    uniforms.time.value += timeDelta
     renderer.render(scene, camera)
   }
 
