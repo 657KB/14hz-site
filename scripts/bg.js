@@ -18,7 +18,9 @@ void main() {
 `
 
 function drawBackground() {
-  const { width, height } = document.getElementById('gl').getBoundingClientRect()
+  const glContainer = document.getElementById('gl')
+
+  const { width, height } = glContainer.getBoundingClientRect()
 
   const uniforms = {
     t: { value: 0 },
@@ -30,7 +32,7 @@ function drawBackground() {
   const renderer = new THREE.WebGLRenderer({ antialias: true })
   renderer.setSize(width, height)
   renderer.setClearColor(0xffffff, 1)
-  document.getElementById('gl').appendChild(renderer.domElement);
+  glContainer.appendChild(renderer.domElement);
   
   const scene = new THREE.Scene()
   
@@ -44,6 +46,12 @@ function drawBackground() {
   
   scene.add(mesh)
 
+  function resize() {
+    const { width, height } = glContainer.getBoundingClientRect()
+    uniforms.r.value = new THREE.Vector2(width, height)
+    renderer.setSize(width, height)
+  }
+
   function render() {
     requestAnimationFrame(render)
     uniforms.t.value += timeDelta
@@ -51,6 +59,8 @@ function drawBackground() {
   }
 
   render()
+
+  window.addEventListener('resize', resize)
 }
 
 window.addEventListener('load', drawBackground)
