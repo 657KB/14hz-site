@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,22 +8,36 @@
   <link rel="stylesheet" href="styles/main.css">
   <script src="https://cdn.jsdelivr.net/npm/three-js@79.0.0/three.min.js"></script>
   <script src="scripts/bg.js"></script>
+  <script src="scripts/nav.js"></script>
 </head>
+
 <body>
+
   <nav>
-    <ul class="nav-list">
-      <li>Home</li>
+    <ul class="nav-list" id="nav">
+      <li data-active="true">Home</li>
       <li>Portfolios</li>
       <li>Pricing</li>
       <li>Contact</li>
     </ul>
   </nav>
+
   <main>
-    <div id="glRenderer"></div>
-    <header class="name-and-slogan">
-      <div class="name">14Hz Studio</div>
-      <div class="slogan">A creative, powerful, and efficient software studio.</div>
-    </header>
+
+    <div class="container" data-nav="Home">
+      <div id="gl"></div>
+      <header>
+        <div class="name">14Hz Studio</div>
+        <div class="slogan">A creative, powerful, and efficient software studio.</div>
+        <button class="intro-btn">Introduction</button>
+      </header>
+    </div>
+
+    <div class="container" data-nav="Portfolios">
+      Hi there.
+    </div>
+
   </main>
+
 </body>
 </html>

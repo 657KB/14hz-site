@@ -1,58 +1,36 @@
-const vertexShader = `
-void main() {
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-}
-`
-
 const fragmentShader = `
 precision mediump float;
 
-uniform float time;
-uniform vec2 resolution;
+uniform float t;
+uniform vec2 r;
 
 void main() {
-  vec2 uv = gl_FragCoord.xy / resolution.xy;
-  uv = uv * 2.0 - 1.0;
-  uv.x *= resolution.x / resolution.y;  
+  vec2 uv = (gl_FragCoord.xy / r.xy) * 2. - 1.;
+  uv.x *= r.x / r.y;
 
-  float frequency = 1.2;
-  float amplitude = 0.4;
+  float d = max(0.2, length(uv));
 
-  float wave = sin(uv.x * frequency + time) * amplitude;
+  float circle = abs(sin(4.653 * d - t));
+  circle *= abs(sin(6.2453 / uv.x));
 
-  float combinedWaves = wave;
-  float distortion = sin(length(uv) * 12.0 - time * 3.0) * 0.08;
-  float waveHeight = combinedWaves + distortion;
-
-  vec3 color = vec3(0.0);
-  color.r = smoothstep(0.0, 0.8, waveHeight);
-  color.g = smoothstep(0.0, 0.8, waveHeight);
-  color.b = smoothstep(0.0, 0.8, waveHeight);
-
-  float glowRadius = 2.0;
-  float glowIntensity = 0.8;
-  float glow = glowIntensity / pow(length(uv) + glowRadius, 2.0);
-
-  color += vec3(glow);
-
-  gl_FragColor = vec4(color, 1.0);
+  gl_FragColor = vec4(vec3(0.01 / circle) * (0.1 / d), 1.0);
 }
 `
 
 function drawBackground() {
-  const { width, height } = document.getElementById('glRenderer').getBoundingClientRect()
+  const { width, height } = document.getElementById('gl').getBoundingClientRect()
 
   const uniforms = {
-    time: { value: 0 },
-    resolution: { value: new THREE.Vector2(width, height) }
+    t: { value: 0 },
+    r: { value: new THREE.Vector2(width, height) },
   }
 
-  const timeDelta = width > 600 ? 0.016 : 0.01
+  const timeDelta = 1 / 120;
 
   const renderer = new THREE.WebGLRenderer({ antialias: true })
   renderer.setSize(width, height)
   renderer.setClearColor(0xffffff, 1)
-  document.getElementById('glRenderer').appendChild(renderer.domElement);
+  document.getElementById('gl').appendChild(renderer.domElement);
   
   const scene = new THREE.Scene()
   
@@ -60,7 +38,7 @@ function drawBackground() {
   camera.position.z = 50
   scene.add(camera)
 
-  const material = new THREE.ShaderMaterial({ uniforms, fragmentShader, vertexShader })
+  const material = new THREE.ShaderMaterial({ uniforms, fragmentShader })
   const geometry = new THREE.PlaneBufferGeometry(width, height)
   const mesh = new THREE.Mesh(geometry, material)
   
@@ -68,7 +46,7 @@ function drawBackground() {
 
   function render() {
     requestAnimationFrame(render)
-    uniforms.time.value += timeDelta
+    uniforms.t.value += timeDelta
     renderer.render(scene, camera)
   }
 
